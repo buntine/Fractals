@@ -17,8 +17,8 @@
   (require (lib "graphics.ss" "graphics"))
 
   (define *ROWS* 64)
-  (define *CELL* '(4 4))
-  (define *WIDTH* (* (car *CELL*) *ROWS*))
+  (define *CELL* '(6 6))
+  (define *WIDTH* (* 2 (* (car *CELL*) *ROWS*)))
   (define *HEIGHT* (* (cadr *CELL*) *ROWS*))
 
   ; Generates the elements of Pascal's triangle to
@@ -50,19 +50,20 @@
                 (cdr previous))))  
 
   ; Draws the given row to the viewport, at the given y.
-  (define (draw-row vp row y)
-    (let ((x 100))
-          (color (if (odd? (car row)) "black" "white")))
-      ((draw-solid-ellipse vp) (make-posn x y) (car *CELL*) (cdr *CELL*) color)
-      (if (not (null? row))
-        (draw-row (cdr row) y))))
+  (define (draw-row vp row x y)
+    (let ((color (if (odd? (car row)) "black" "white")))
+      ((draw-solid-ellipse vp) (make-posn x y) (car *CELL*) (cadr *CELL*) color)
+      (if (> (length row) 1)
+        (draw-row vp (cdr row) (+ x (car *CELL*)) y))))
 
   ; Draws each row of the triangle to the viewport.
   (define (draw-rows vp rows)
-    (let ((row (car rows))
-          (y (* (length rows) (car *CELL*))))
-      (draw-row vp row y)
-      (if (not (null? rows))
+    (let* ((row (car rows))
+           (y (* (- (length row) 1) (car *CELL*))))
+      (draw-row vp row (- (/ *WIDTH* 2)
+                          (+ (* (length row)
+                             (car *CELL*)) 3)) y)
+      (if (> (length rows) 1)
         (draw-rows vp (cdr rows)))))
 
   ; Initialising function. This is the one you should invoke!
