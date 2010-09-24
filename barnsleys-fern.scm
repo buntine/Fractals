@@ -115,7 +115,7 @@
   ; Initialising function. This is the one you should invoke!
   (define (draw-barnsleys-fern)
     (open-graphics)
-    (let ((vp (open-viewport "Fractals - Bernley's Fern" *WIDTH* *HEIGHT*)))
+    (let ((vp (open-viewport "Fractals - Barnsley's Fern" *WIDTH* *HEIGHT*)))
       (plot-points vp 0 1 1)))
 
   (provide draw-barnsleys-fern))

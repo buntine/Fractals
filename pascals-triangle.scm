@@ -49,8 +49,26 @@
                       body)  
                 (cdr previous))))  
 
+  ; Draws the given row to the viewport, at the given y.
+  (define (draw-row vp row y)
+    (let ((x 100))
+          (color (if (odd? (car row)) "black" "white")))
+      ((draw-solid-ellipse vp) (make-posn x y) (car *CELL*) (cdr *CELL*) color)
+      (if (not (null? row))
+        (draw-row (cdr row) y))))
+
+  ; Draws each row of the triangle to the viewport.
+  (define (draw-rows vp rows)
+    (let ((row (car rows))
+          (y (* (length rows) (car *CELL*))))
+      (draw-row vp row y)
+      (if (not (null? rows))
+        (draw-rows vp (cdr rows)))))
+
   ; Initialising function. This is the one you should invoke!
   (define (draw-pascals-triangle)
-    (pascals-triangle *ROWS*))
+    (open-graphics)
+    (let ((vp (open-viewport "Fractals - Sierpinski Triangle (approx. from Pascal's Triangle)" *WIDTH* *HEIGHT*)))
+      (draw-rows vp (pascals-triangle *ROWS*))))
 
   (provide draw-pascals-triangle))
