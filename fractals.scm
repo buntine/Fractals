@@ -18,6 +18,7 @@
 
 (module fractals mzscheme
   (require "barnsleys-fern.scm")
+  (require "pascals-triangle.scm")
 
   ; Executes a program given by prg.
   (define (draw prg)
@@ -26,4 +27,5 @@
                             (symbol->string prg))))))
 
   (provide draw
-           (all-from "barnsleys-fern.scm")))
+           (all-from "barnsleys-fern.scm")
+           (all-from "pascals-triangle.scm")))
