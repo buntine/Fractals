@@ -33,10 +33,10 @@
   ; Or try the following matrix to generate the "Fishbone fern" as
   ; described here: http://www.home.aone.net.au/~byzantium/ferns/fractal.html
   ;(define matrix
-  ;  '(#(0 0 0 0.25 0 -0.4 0.02 "green")
-  ;    #(0.95 0.002 -0.002 0.93 -0.002 0.5 0.84 "green")
-  ;    #(0.035 -0.11 0.27 0.01 -0.05 0.005 0.07 "green")
-  ;    #(-0.04 0.11 0.27 0.01 0.047 0.06 0.07 "green")))
+  ;  '(#(0 0 0 0.25 0 -0.4 0.02)
+  ;    #(0.95 0.002 -0.002 0.93 -0.002 0.5 0.84)
+  ;    #(0.035 -0.11 0.27 0.01 -0.05 0.005 0.07)
+  ;    #(-0.04 0.11 0.27 0.01 0.047 0.06 0.07)))
 
   ; Returns a given value from a row of the matrix
   ; as fed in through 'input'.
@@ -70,12 +70,6 @@
   (define (find-y x y input)
     (find-point x y #\c #\d #\f input))
 
-  ; Just a few abstractions to give better names.
-  (define range-w (- (cadr *RANGE_X*) (car *RANGE_X*)))
-  (define range-h (- (cadr *RANGE_Y*) (car *RANGE_Y*)))
-  (define range-min-w (car *RANGE_X*))
-  (define range-min-h (car *RANGE_Y*))
-
   ; Returns a list representing the red, green and blue 
   ; portions of a colour based on the given position.
   ; I use this to generate a gradient.
@@ -83,6 +77,12 @@
     (let ((y (posn-y posn))
           (blocks (/ *HEIGHT* 65)))
       `(0 ,(+ (/ (/ y blocks) 100) 0.35) 0)))
+
+  ; Just a few abstractions to give better names.
+  (define range-w (- (cadr *RANGE_X*) (car *RANGE_X*)))
+  (define range-h (- (cadr *RANGE_Y*) (car *RANGE_Y*)))
+  (define range-min-w (car *RANGE_X*))
+  (define range-min-h (car *RANGE_Y*))
 
   ; Calculates a pixel position and draws a point on it.
   ; We are only interested in this functions side-effects.
