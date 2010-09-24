@@ -12,8 +12,8 @@
   (require (lib "graphics.ss" "graphics"))
 
   (define *ITERATIONS* 600000)
-  (define *WIDTH* 550)
-  (define *HEIGHT* 550)
+  (define *WIDTH* 360)
+  (define *HEIGHT* 360)
 
   ; Valid ranges for the plottable points.
   (define *RANGE_X* '(-2.1818 2.6556))
@@ -22,13 +22,13 @@
   ; Matrix constants for each function as found at:
   ;   http://en.wikipedia.org/wiki/Barnsley_fern.
   ;
-  ; Format (where 'p' is the probability factor and 'g' the colour):
-  ;   (a b c d e f p g)
+  ; Format (where 'p' is the probability factor):
+  ;   (a b c d e f p)
   (define matrix
-    '(#(0 0 0 0.16 0 0 0.01 "green")
-      #(0.85 0.04 -0.04 0.85 0 1.6 0.85 "green")
-      #(0.2 -0.26 0.23 0.22 0 1.6 0.08 "green")
-      #(-0.15 0.28 0.26 0.24 0 0.44 0.06 "green")))
+    '(#(0 0 0 0.16 0 0 0.01)
+      #(0.85 0.04 -0.04 0.85 0 1.6 0.85)
+      #(0.2 -0.26 0.23 0.22 0 1.6 0.08)
+      #(-0.15 0.28 0.26 0.24 0 0.44 0.06)))
 
   ; Or try the following matrix to generate the "Fishbone fern" as
   ; described here: http://www.home.aone.net.au/~byzantium/ferns/fractal.html
@@ -76,11 +76,19 @@
   (define range-min-w (car *RANGE_X*))
   (define range-min-h (car *RANGE_Y*))
 
+  ; Returns a list representing the red, green and blue 
+  ; portions of a colour based on the given position.
+  ; I use this to generate a gradient.
+  (define (rgb-for-posn posn)
+    (let ((y (posn-y posn))
+          (blocks (/ *HEIGHT* 65)))
+      `(0 ,(+ (/ (/ y blocks) 100) 0.35) 0)))
+
   ; Calculates a pixel position and draws a point on it.
   ; We are only interested in this functions side-effects.
   ; NOTE: I got some help from http://vb-helper.com for
   ;       the pixel-x/pixel-y formulas.
-  (define (paint-pixel vp x y color)
+  (define (paint-pixel vp x y)
     (let* ((pixel-x (* (/ (- x range-min-w)
                           range-w)
                        *WIDTH*))
@@ -91,7 +99,8 @@
       ; Draw the pixel if it's in range.
       (if (and (>= pixel-x 0) (>= pixel-y 0)
                (< pixel-x *WIDTH*) (< pixel-y *HEIGHT*))
-        ((draw-pixel vp) posn color))))
+        ((draw-pixel vp) posn
+                         (apply make-rgb (rgb-for-posn posn))))))
 
   ; Plots the next point on the canvas using x,y as the
   ; seed and i as the iteration.
@@ -99,7 +108,7 @@
     (let* ((input (choose-function 0 (random)))
            (next-x (find-x x y input))
            (next-y (find-y x y input)))
-      (paint-pixel vp next-x next-y (mval #\g input))
+      (paint-pixel vp next-x next-y)
       (if (< i *ITERATIONS*)
         (plot-points vp (+ i 1) next-x next-y))))
 

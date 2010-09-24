@@ -12,6 +12,9 @@
 ;;;     (require "/path/to/this/repo/fractals.scm")
 ;;;     (draw 'barnsleys-fern)
 ;;;     (draw 'pascals-triangle)
+;;;
+;;;   Or (after requiring) call the programs directly:
+;;;     (draw-pascals-triangle)
 
 (module fractals mzscheme
   (require "barnsleys-fern.scm")
