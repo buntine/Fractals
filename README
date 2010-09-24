@@ -1,0 +1,12 @@
+Experiments with Fractals
+Andrew Buntine, 2010
+http://www.andrewbuntine.com
+
+I have written these programs using the Viewport graphics library available in
+PLT Scheme (or Racket these days). I recommend installing Dr. Scheme (sudo apt-get install drscheme)
+and selecting the "Pretty Big" implementation.
+
+  (load "/path/to/this/repo/fractals.scm")
+
+  (draw 'barnsleys-fern)
+  (draw 'pascals-triangle)
