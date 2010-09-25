@@ -12,12 +12,16 @@
 ;;; begins to emerge!
 ;;;
 ;;; See fractals.scm for execution instructions.
+;;;
+;;; TODO:
+;;;   - Change *CELL* from pair to integer.
+;;;   - Clean up (add more functions, etc).
 
 (module pascals-triangle mzscheme
   (require (lib "graphics.ss" "graphics"))
 
   (define *ROWS* 64)
-  (define *CELL* '(6 6))
+  (define *CELL* '(7 7))
   (define *WIDTH* (* (car *CELL*) *ROWS*))
   (define *HEIGHT* (* (cadr *CELL*) *ROWS*))
 
@@ -51,7 +55,7 @@
 
   ; Draws the given row to the viewport, at the given y.
   (define (draw-row vp row x y)
-    (let ((color (if (odd? (car row)) "black" "white")))
+    (let ((color (if (odd? (car row)) "MidnightBlue" "LightSteelBlue")))
       ((draw-solid-ellipse vp) (make-posn x y) (car *CELL*) (cadr *CELL*) color)
       (if (> (length row) 1)
         (draw-row vp (cdr row) (+ x (car *CELL*)) y))))
