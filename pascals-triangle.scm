@@ -18,7 +18,7 @@
 
   (define *ROWS* 64)
   (define *CELL* '(6 6))
-  (define *WIDTH* (* 2 (* (car *CELL*) *ROWS*)))
+  (define *WIDTH* (* (car *CELL*) *ROWS*))
   (define *HEIGHT* (* (cadr *CELL*) *ROWS*))
 
   ; Generates the elements of Pascal's triangle to
@@ -62,7 +62,7 @@
            (y (* (- (length row) 1) (car *CELL*))))
       (draw-row vp row (- (/ *WIDTH* 2)
                           (+ (* (length row)
-                             (car *CELL*)) 3)) y)
+                             (/ (car *CELL*) 2)) 3)) y)
       (if (> (length rows) 1)
         (draw-rows vp (cdr rows)))))
 
