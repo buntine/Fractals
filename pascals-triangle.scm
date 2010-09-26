@@ -17,9 +17,9 @@
   (require (lib "graphics.ss" "graphics"))
 
   (define *ROWS* 64)
-  (define *CELL* 7)
-  (define *WIDTH* (* *CELL* *ROWS*))
-  (define *HEIGHT* (* *CELL* *ROWS*))
+  (define *CELL* 6)
+  (define *WIDTH* (+ 10 (* *CELL* *ROWS*)))
+  (define *HEIGHT* (+ 10 (* *CELL* *ROWS*)))
 
   ; Tweak as you like '(odd even).
   (define *COLORS* '("MidnightBlue" "LightSteelBlue"))
@@ -52,17 +52,19 @@
                       body)  
                 (cdr previous))))  
 
-  ; Returns the y offset value for the given row.
+  ; Returns the y offset value for the given row (+5 for a little padding).
   (define (y-for-row row)
-    (* (- (length row) 1)
-       *CELL*))
+    (+ 5
+       (* (- (length row) 1)
+          *CELL*)))
 
   ; Returns the x offset value for the given row.
   (define (x-for-row row)
-    (- (/ *WIDTH* 2)
-       (+ (* (length row)
-             (/ *CELL* 2))
-          3)))
+    (let ((half-cell (/ *CELL* 2)))
+      (- (/ *WIDTH* 2)
+         (+ (* (length row)
+               half-cell)
+            half-cell))))
 
   ; Draws the given row to the viewport, at the given y.
   (define (draw-row vp row x y)
