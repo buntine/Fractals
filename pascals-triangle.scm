@@ -12,18 +12,17 @@
 ;;; begins to emerge!
 ;;;
 ;;; See fractals.scm for execution instructions.
-;;;
-;;; TODO:
-;;;   - Change *CELL* from pair to integer.
-;;;   - Clean up (add more functions, etc).
 
 (module pascals-triangle mzscheme
   (require (lib "graphics.ss" "graphics"))
 
   (define *ROWS* 64)
-  (define *CELL* '(7 7))
-  (define *WIDTH* (* (car *CELL*) *ROWS*))
-  (define *HEIGHT* (* (cadr *CELL*) *ROWS*))
+  (define *CELL* 7)
+  (define *WIDTH* (* *CELL* *ROWS*))
+  (define *HEIGHT* (* *CELL* *ROWS*))
+
+  ; Tweak as you like '(odd even).
+  (define *COLORS* '("MidnightBlue" "LightSteelBlue"))
 
   ; Generates the elements of Pascal's triangle to
   ; the given width (rows). The triangle is represented
@@ -53,20 +52,31 @@
                       body)  
                 (cdr previous))))  
 
+  ; Returns the y offset value for the given row.
+  (define (y-for-row row)
+    (* (- (length row) 1)
+       *CELL*))
+
+  ; Returns the x offset value for the given row.
+  (define (x-for-row row)
+    (- (/ *WIDTH* 2)
+       (+ (* (length row)
+             (/ *CELL* 2))
+          3)))
+
   ; Draws the given row to the viewport, at the given y.
   (define (draw-row vp row x y)
-    (let ((color (if (odd? (car row)) "MidnightBlue" "LightSteelBlue")))
-      ((draw-solid-ellipse vp) (make-posn x y) (car *CELL*) (cadr *CELL*) color)
+    (let ((color-fn (if (odd? (car row)) car cadr)))
+      ((draw-solid-ellipse vp) (make-posn x y) *CELL* *CELL* (color-fn *COLORS*))
       (if (> (length row) 1)
-        (draw-row vp (cdr row) (+ x (car *CELL*)) y))))
+        (draw-row vp (cdr row) (+ x *CELL*) y))))
 
   ; Draws each row of the triangle to the viewport.
   (define (draw-rows vp rows)
     (let* ((row (car rows))
-           (y (* (- (length row) 1) (car *CELL*))))
-      (draw-row vp row (- (/ *WIDTH* 2)
-                          (+ (* (length row)
-                             (/ (car *CELL*) 2)) 3)) y)
+           (x (x-for-row row))
+           (y (y-for-row row)))
+      (draw-row vp row x y)
       (if (> (length rows) 1)
         (draw-rows vp (cdr rows)))))
 
