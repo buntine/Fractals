@@ -13,7 +13,7 @@
   (require (lib "graphics.ss" "graphics"))
 
   (define *DEPTH* 8)
-  (define *LENGTH* 70)
+  (define *LENGTH* 100)
   (define *ANGLE* 20)
   (define *WIDTH* 300)
   (define *HEIGHT* 300)
