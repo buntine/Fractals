@@ -12,24 +12,35 @@
 (module uniform-tree mzscheme
   (require (lib "graphics.ss" "graphics"))
 
-  (define *DEPTH* 6)
-  (define *LENGTH* 40)
-  (define *WIDTH* (* *DEPTH* *LENGTH* 2))
-  (define *HEIGHT* (* *DEPTH* *LENGTH*))
+  (define *DEPTH* 8)
+  (define *LENGTH* 70)
+  (define *WIDTH* 300)
+  (define *HEIGHT* 300)
+  (define *PI* 3.14159265358979)
 
-  (define (draw-branch posn depth offset vp)
-    (let* ((len (/ *LENGTH* depth))
-           (end-posn (make-posn (+ (posn-x posn) offset) (- (posn-y posn) len))))
-      ((draw-line vp) posn end-posn "blue")
-      (if (< depth *DEPTH*)
-        (begin
-          (draw-branch end-posn (+ depth 1) (- offset len) vp)
-          (draw-branch end-posn (+ depth 1) (+ offset len) vp)))))
+  (define (posn-for-theta posn len theta)
+    (let ((plot (lambda (c fn)
+                  (round (+ c (* len (fn theta)))))))
+      (make-posn (plot (posn-x posn) cos)
+                 (plot (posn-y posn) sin))))
+
+  (define (plot-line vp posn d len)
+    (let* ((theta (* d (/ *PI* 180)))
+           (end-posn (posn-for-theta posn len theta)))
+      ((draw-line vp) posn end-posn "black")
+      end-posn))
+
+  (define (draw-branch vp posn depth angle)
+     (let* ((len (/ *LENGTH* depth))
+            (end-posn (plot-line vp posn angle len)))
+       (if (< depth *DEPTH*)
+         (begin
+           (draw-branch vp end-posn (+ depth 1) (- angle 30))
+           (draw-branch vp end-posn (+ depth 1) (+ angle 30))))))
 
   (define (draw-uniform-tree)
     (open-graphics)
     (let ((vp (open-viewport "Fractals - Uniform tree" *WIDTH* *HEIGHT*)))
-      (draw-branch (make-posn (/ *WIDTH* 2) *HEIGHT*)
-                   1 0 vp)))
+      (draw-branch vp (make-posn (/ *WIDTH* 2) *HEIGHT*) 1 270)))
 
   (provide draw-uniform-tree))
