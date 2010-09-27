@@ -6,7 +6,14 @@ I have written these programs using the Viewport graphics library available in
 PLT Scheme (or Racket these days). I recommend installing Dr. Scheme (sudo apt-get install drscheme)
 and selecting the "Pretty Big" implementation.
 
-  (load "/path/to/this/repo/fractals.scm")
+Usage:
+  Load this file and then execute the "draw" function, passing the
+  filename (without extension) as a symbol.
 
-  (draw 'barnsleys-fern)
-  (draw 'pascals-triangle)
+  For example:
+    (require "/path/to/this/repo/fractals.scm")
+    (draw 'barnsleys-fern)
+    (draw 'pascals-triangle)
+
+  Or (after requiring) call the programs directly:
+    (draw-pascals-triangle)
