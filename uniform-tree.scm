@@ -14,29 +14,36 @@
 
   (define *DEPTH* 8)
   (define *LENGTH* 70)
+  (define *ANGLE* 20)
   (define *WIDTH* 300)
   (define *HEIGHT* 300)
   (define *PI* 3.14159265358979)
 
+  ; Plots a new position given a current position, a length
+  ; and a theta value.
   (define (posn-for-theta posn len theta)
     (let ((plot (lambda (c fn)
                   (round (+ c (* len (fn theta)))))))
       (make-posn (plot (posn-x posn) cos)
                  (plot (posn-y posn) sin))))
 
+  ; Draws a line starting from the given position, going
+  ; len pixels at an angle of d degrees. Returns the
+  ; ending position.
   (define (plot-line vp posn d len)
     (let* ((theta (* d (/ *PI* 180)))
            (end-posn (posn-for-theta posn len theta)))
       ((draw-line vp) posn end-posn "black")
       end-posn))
 
+  ; Draws a new branch of the tree.
   (define (draw-branch vp posn depth angle)
      (let* ((len (/ *LENGTH* depth))
             (end-posn (plot-line vp posn angle len)))
        (if (< depth *DEPTH*)
          (begin
-           (draw-branch vp end-posn (+ depth 1) (- angle 30))
-           (draw-branch vp end-posn (+ depth 1) (+ angle 30))))))
+           (draw-branch vp end-posn (+ depth 1) (- angle *ANGLE*))
+           (draw-branch vp end-posn (+ depth 1) (+ angle *ANGLE*))))))
 
   (define (draw-uniform-tree)
     (open-graphics)
