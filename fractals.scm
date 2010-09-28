@@ -20,6 +20,7 @@
   (require "barnsleys-fern.scm")
   (require "pascals-triangle.scm")
   (require "uniform-tree.scm")
+  (require "random-tree.scm")
 
   ; Executes a program given by prg.
   (define (draw prg)
@@ -30,4 +31,5 @@
   (provide draw
            (all-from "barnsleys-fern.scm")
            (all-from "pascals-triangle.scm")
-           (all-from "uniform-tree.scm")))
+           (all-from "uniform-tree.scm")
+           (all-from "random-tree.scm")))
