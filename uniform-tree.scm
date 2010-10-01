@@ -42,6 +42,7 @@
             (end-posn (plot-line vp posn angle len)))
        (if (< depth *DEPTH*)
          (begin
+           (sleep 0.05)
            (draw-branch vp end-posn (+ depth 1) (- angle *ANGLE*))
            (draw-branch vp end-posn (+ depth 1) (+ angle *ANGLE*))))))
 
